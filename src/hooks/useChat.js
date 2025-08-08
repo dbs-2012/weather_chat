@@ -102,7 +102,13 @@ export default function useChat(threadId, rollNumber) {
             try {
               const parsed = JSON.parse(trimmed.slice(2).trim());
               if (typeof parsed === "string") {
-                fullMessage += parsed;
+                const cleaned = parsed
+                  .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove bold markdown
+                  .replace(/\n+/g, ' ')             // Remove all line breaks
+                  .replace(/\s+/g, ' ')             // Normalize extra spaces
+
+                fullMessage += cleaned;
+
                 setMessages(prev =>
                   prev.map(m =>
                     m.id === tempAgentId ? { ...m, content: fullMessage } : m
@@ -130,7 +136,7 @@ export default function useChat(threadId, rollNumber) {
       );
     } catch (err) {
       console.error("Chat error:", err);
-      setError("❌ Failed to fetch response. Please try again.");
+      setError("Failed to fetch response. Please try again.");
       setMessages(prev =>
         prev.map(m =>
           m.id === tempAgentId
