@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import MessageBubble from "./components/MessageBubble";
 import MessageInput from "./components/MessageInput";
 import Loader from "./components/Loader";
@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") setDarkMode(true);
-  }, []);
+  }, [setDarkMode]);
 
   useEffect(() => {
     if (darkMode) {
